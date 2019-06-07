@@ -26,6 +26,7 @@ $(document).ready(function() {
         )
       })
     }
+    //this deletes todo
     $('.todoItem').on('click', function() {
       var id = $(this).attr('id')
       todoArray.splice(id, 1)
