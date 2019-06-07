@@ -37,11 +37,21 @@ nav {
   font-size: 1.25rem;
 }
 
+#todoList {
+  background-color: #34495e;
+  position: relative;
+  margin-left: 50%;
+  transform: translate(-50%, 0);
+  width: 50%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 footer {
   height: 10vh;
   background-color: #34495e;
 }
 
 h1 {
-  color: #2c3e50;
+  color: white;
 }

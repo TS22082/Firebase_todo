@@ -17,7 +17,6 @@ $(document).ready(function() {
 
   db.ref().on('value', function(snap) {
     $('#todoList').empty()
-
     if (todoArray != null) {
       todoArray = snap.val().todos
       console.log(todoArray)
@@ -27,11 +26,8 @@ $(document).ready(function() {
         )
       })
     }
-
     $('.todoItem').on('click', function() {
       var id = $(this).attr('id')
-      console.log(id)
-
       todoArray.splice(id, 1)
       db.ref().set({
         todos: todoArray
