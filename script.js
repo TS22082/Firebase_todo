@@ -10,39 +10,59 @@ $(document).ready(function() {
   }
   // Initialize Firebase
   firebase.initializeApp(config)
-
   db = firebase.database()
 
   let todoArray = []
 
+  function Todo(todo, time) {
+    this.todo = todo
+    this.time = time
+  }
+
   db.ref().on('value', function(snap) {
     $('#todoList').empty()
-    if (todoArray != null) {
+
+    try {
       todoArray = snap.val().todos
       console.log(todoArray)
       todoArray.forEach((element, index) => {
         $('#todoList').append(
-          `<h1 class="todoItem" id="${index}">${element}</h1>`
+          `<h1 class="todoItem" id="${index}">${element.todo}</h1>` +
+            `<p>${element.time}</p>`
         )
       })
-    }
-    //this deletes todo
-    $('.todoItem').on('click', function() {
-      var id = $(this).attr('id')
-      todoArray.splice(id, 1)
-      db.ref().set({
-        todos: todoArray
+      //this deletes todo
+      $('.todoItem').on('click', function() {
+        var id = $(this).attr('id')
+        todoArray.splice(id, 1)
+        db.ref().set({
+          todos: todoArray
+        })
       })
-    })
+    } catch {
+      console.error('Todos are null, add a todo')
+    }
   })
 
-  $('#submit').click(() => {
+  function submitTodo() {
     textValue = $('#textInput').val()
-    todoArray.push(textValue)
-    console.log(todoArray)
-
+    time = String(moment()._d)
+    NewTodo = new Todo(textValue, time)
+    todoArray.push(NewTodo)
     db.ref().set({
       todos: todoArray
     })
+  }
+
+  document.onkeyup = checkKey
+
+  function checkKey(e) {
+    if (e.keyCode === 13) {
+      submitTodo()
+    }
+  }
+
+  $('#submit').click(() => {
+    submitTodo()
   })
 })
