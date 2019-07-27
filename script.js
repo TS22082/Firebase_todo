@@ -41,8 +41,9 @@ $(document).ready(function() {
   $(document).on('click', '.updateTodo', function() {
     const index = $(this).attr('id')
     const text = $('#textInput').val()
-    time = String(moment()._d)
-    updatedTodo = new Todo(text, time)
+    const time = String(moment()._d)
+    const updatedTodo = new Todo(text, time)
+
     todoArray[index] = updatedTodo
     db.ref().set({
       todos: todoArray
@@ -58,9 +59,9 @@ $(document).ready(function() {
   })
 
   function submitTodo() {
-    textValue = $('#textInput').val()
-    time = String(moment()._d)
-    NewTodo = new Todo(textValue, time)
+    const textValue = $('#textInput').val()
+    const time = String(moment()._d)
+    const NewTodo = new Todo(textValue, time)
     todoArray.push(NewTodo)
     db.ref().set({
       todos: todoArray
