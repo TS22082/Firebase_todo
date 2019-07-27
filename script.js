@@ -14,34 +14,47 @@ $(document).ready(function() {
 
   let todoArray = []
 
-  function Todo(todo, time) {
-    this.todo = todo
-    this.time = time
+  class Todo {
+    constructor(todo, time) {
+      this.todo = todo
+      this.time = time
+    }
   }
 
   db.ref().on('value', function(snap) {
     $('#todoList').empty()
-
     try {
       todoArray = snap.val().todos
       console.log(todoArray)
       todoArray.forEach((element, index) => {
         $('#todoList').append(
           `<h1 class="todoItem" id="${index}">${element.todo}</h1>` +
-            `<p>${element.time}</p>`
+            `<p>${element.time}</p>` +
+            `<input type='button' value='Update' id=${index} class='updateTodo'/>`
         )
-      })
-      //this deletes todo
-      $('.todoItem').on('click', function() {
-        var id = $(this).attr('id')
-        todoArray.splice(id, 1)
-        db.ref().set({
-          todos: todoArray
-        })
       })
     } catch {
       console.error('Todos are null, add a todo')
     }
+  })
+
+  $(document).on('click', '.updateTodo', function() {
+    const index = $(this).attr('id')
+    const text = $('#textInput').val()
+    time = String(moment()._d)
+    updatedTodo = new Todo(text, time)
+    todoArray[index] = updatedTodo
+    db.ref().set({
+      todos: todoArray
+    })
+  })
+
+  $(document).on('click', '.todoItem', function() {
+    var id = $(this).attr('id')
+    todoArray.splice(id, 1)
+    db.ref().set({
+      todos: todoArray
+    })
   })
 
   function submitTodo() {
